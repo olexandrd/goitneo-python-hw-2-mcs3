@@ -28,13 +28,10 @@ class Phone(Field):
 
     @value.setter
     def value(self, value):
-        if self.validate_number(value):
+        if value.isdigit() and len(value) == 10:
             self.__number = value
         else:
             raise ValueError("Phone number is invalid.")
-
-    def validate_number(self, value):
-        return value.isdigit() and len(value) == 10
 
     def __str__(self):
         return self.value
@@ -49,8 +46,9 @@ class Record:
         self.phones.append(Phone(phone))
 
     def delete_phone(self, phone: str):
-        if phone in self.phones:
-            self.phones.remove(Phone(phone))
+        for index, phonenumber in enumerate(self.phones):
+            if phonenumber.value == phone:
+                self.phones.pop(index)
 
     def edit_phone(self, old_phone: str, new_phone: str):
         for phone in self.phones:
